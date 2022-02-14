@@ -1,0 +1,71 @@
+{
+  "name": "miyanee",
+  "description": "Miyanee is great!",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Miyaneee/miyanee.git"
+  },
+  "author": {
+    "name": "Miyaneee",
+    "email": "gutianhuang@foxmail.com",
+    "url": "https://github.com/Miyaneee"
+  },
+  "bugs": {
+    "url": "https://github.com/Miyaneee/miyanee/issues"
+  },
+  "keywords": [
+    "electron",
+    "react",
+    "typescript",
+    "rsuite",
+    "redux"
+  ],
+  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "devEngines": {
+    "node": ">=14.x",
+    "npm": ">=7.x"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "start:renderer": "vite",
+    "start:main": "nodemon -c nodemon.json",
+    "start": "node scripts/start.js",
+    "build:renderer": "vite build",
+    "build:main": "webpack",
+    "build": "npm run build:renderer && npm run build:main",
+    "package": "npm run build && electron-builder",
+    "lint": "eslint ./src/**/*.{js,jsx} --max-warnings 0",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
+  },
+  "devDependencies": {
+    "@nabla/vite-plugin-eslint": "^1.3.5",
+    "@reduxjs/toolkit": "^1.7.1",
+    "@vitejs/plugin-react": "^1.0.7",
+    "concurrently": "^7.0.0",
+    "conventional-changelog-cli": "^2.1.1",
+    "dotenv": "^16.0.0",
+    "electron": "^16.0.8",
+    "electron-builder": "^22.14.13",
+    "electron-notarize": "^1.1.1",
+    "eslint": "^8.5.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-react-app": "^7.0.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "less": "^4.1.2",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.6",
+    "react-router-dom": "^6.2.1",
+    "redux": "^4.1.2",
+    "rsuite": "^5.4.0",
+    "vite": "^2.7.2",
+    "wait-on": "^6.0.1",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2"
+  }
+}

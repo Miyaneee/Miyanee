@@ -1,0 +1,5 @@
+{
+  "watch": ["package.json", "main"],
+  "ext": "*",
+  "exec": "electron main/index.js"
+}
