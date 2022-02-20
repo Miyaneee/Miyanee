@@ -32,10 +32,7 @@
     "start:renderer": "vite",
     "start:main": "nodemon -c nodemon.json",
     "start": "node scripts/start.js",
-    "build:renderer": "vite build",
-    "build:main": "webpack",
-    "build": "npm run build:renderer && npm run build:main",
-    "package": "npm run build && electron-builder",
+    "build:renderer": "cd src/renderer && vite build",
     "lint": "eslint ./src/**/*.{js,jsx} --max-warnings 0",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
