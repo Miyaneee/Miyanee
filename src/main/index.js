@@ -1,5 +1,5 @@
 import { app, BrowserWindow } from 'electron'
-import { homeUrl, preloadUrl } from './config'
+import { homeUrl, preloadUrl } from '@/config'
 import os from 'os'
 
 app.whenReady().then(() => {

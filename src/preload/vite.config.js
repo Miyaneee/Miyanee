@@ -1,4 +1,4 @@
-import { join } from 'path'
+import path from 'path'
 import { builtinModules } from 'module'
 import eslint from '@nabla/vite-plugin-eslint'
 import { chrome } from '../target.json'
@@ -11,10 +11,22 @@ const config = {
   mode: process.env.MODE || 'production',
   root: __dirname,
   envDir: process.cwd(),
+  resolve: {
+    alias: [
+      {
+        find: /^@@\/(.*)/,
+        replacement: path.join(__dirname, '../..', '$1')
+      },
+      {
+        find: /^@\/(.*)/,
+        replacement: path.join(__dirname, '$1')
+      }
+    ]
+  },
   build: {
     sourcemap: 'inline',
     target: `chrome${chrome}`,
-    outDir: join(__dirname, '../../dist/build'),
+    outDir: path.join(__dirname, '../../dist/build'),
     minify: process.env.MODE !== 'development',
     lib: {
       entry: 'preload.js',
