@@ -5,7 +5,7 @@ import './Error.less'
 function Error() {
   const navigate = useNavigate()
   return (
-    <div id="ErrorPage">
+    <div className="ErrorPage">
       <div>
         <h1>404 Not Found</h1>
         <h3>Something went wrong, the page is not here.</h3>
