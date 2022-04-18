@@ -1,1 +1,24 @@
 @import 'rsuite/styles/index.less';
+
+body {
+  font-size: 16px;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@scrollbarWidth: 8px;
+::-webkit-scrollbar {
+  width: @scrollbarWidth;
+}
+::-webkit-scrollbar-track {
+  border-radius: @scrollbarWidth;
+  background: #eee;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: @scrollbarWidth;
+  background: #ccc;
+}
