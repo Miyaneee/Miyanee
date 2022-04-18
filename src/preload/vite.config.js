@@ -20,6 +20,10 @@ const config = {
       {
         find: /^@\/(.*)/,
         replacement: path.join(__dirname, '$1')
+      },
+      {
+        find: /^@shared$/,
+        replacement: path.join(__dirname, '../shared')
       }
     ]
   },
