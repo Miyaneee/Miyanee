@@ -35,8 +35,7 @@
     "build:main": "cd src/main && vite build",
     "build": "npm run build:renderer && npm run build:main && npm run build:preload",
     "package": "node scripts/clear.js && npm run build && electron-builder --config electron-builder.config.js",
-    "lint": "eslint ./src/**/*.{js,jsx} --max-warnings 0",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
+    "lint": "eslint ./src/**/*.{js,jsx} --max-warnings 0"
   },
   "devDependencies": {
     "@nabla/vite-plugin-eslint": "^1.4.0",
@@ -45,7 +44,6 @@
     "@rsuite/responsive-nav": "^5.0.1",
     "@vitejs/plugin-react": "^1.0.7",
     "axios": "^0.26.1",
-    "conventional-changelog-cli": "^2.1.1",
     "dotenv": "^16.0.0",
     "electron": "^18.0.4",
     "electron-builder": "^23.0.3",
