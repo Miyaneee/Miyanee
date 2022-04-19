@@ -7,7 +7,7 @@ const initialState = {
       key: '0',
       label: 'Home',
       component: 'Home',
-      params: ''
+      params: {}
     }
   ]
 }
@@ -24,8 +24,9 @@ const slice = createSlice({
         state.show = payload
       }
       if (typeof payload === 'object') {
-        state.show = payload.key
-        state.pages.push(payload)
+        const key = state.pages.length.toString()
+        state.pages.push({ ...payload, key, component: 'Plugin' })
+        state.show = key
       }
     }
   }
