@@ -5,7 +5,8 @@ const initialState = [
     name: 'DarkSouls Save Manager',
     index: 'E:/Projects/@miyaneee/miyanee/dist/build/index.html',
     icon: 'E:/Projects/@miyaneee/miyanee/dist/build/assets/icon.85a2e74e.ico',
-    preload: 'E:/Projects/@miyaneee/miyanee/dist/build/preload.js'
+    preload: 'E:/Projects/@miyaneee/miyanee/dist/build/preload.js',
+    ready: false
   }
 ]
 
