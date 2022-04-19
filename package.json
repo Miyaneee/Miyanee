@@ -23,9 +23,8 @@
     "redux"
   ],
   "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
-  "devEngines": {
-    "node": ">=14.x",
-    "npm": ">=7.x"
+  "engines": {
+    "node": ">=16.7.0"
   },
   "scripts": {
     "prepare": "husky install",
@@ -37,13 +36,15 @@
     "package": "node scripts/clear.js && npm run build && electron-builder --config electron-builder.config.js",
     "lint": "eslint ./src/**/*.{js,jsx} --max-warnings 0"
   },
+  "dependencies": {
+    "compressing": "^1.5.1"
+  },
   "devDependencies": {
     "@nabla/vite-plugin-eslint": "^1.4.0",
     "@reduxjs/toolkit": "^1.7.1",
     "@rsuite/icons": "^1.0.2",
     "@rsuite/responsive-nav": "^5.0.1",
     "@vitejs/plugin-react": "^1.0.7",
-    "axios": "^0.26.1",
     "dotenv": "^16.0.0",
     "electron": "^18.0.4",
     "electron-builder": "^23.0.3",
@@ -54,12 +55,14 @@
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
     "less": "^4.1.2",
+    "node-fetch": "^3.2.3",
     "prettier": "^2.5.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^8.0.0",
     "redux": "^4.1.2",
     "rsuite": "^5.4.0",
+    "uuid": "^8.3.2",
     "vite": "^2.7.2"
   }
 }
