@@ -1,4 +1,4 @@
-import { mkdir, cp, readdir, access } from 'node:fs/promises'
+import { mkdir, cp, readdir, access, readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import fetch from 'node-fetch'
 import { tgz } from 'compressing'
@@ -27,7 +27,33 @@ export async function downloadApp(object) {
   await tgz.uncompress(response.body, path)
   await cp(join(path, 'package'), path, { recursive: true })
 
-  return true
+  const appInfo = await parseApp(path)
+  if (!appInfo.name) return false
+  appInfo.packageName = name
+
+  return appInfo
+}
+
+/**
+ * Parse miyanee.json to get app info
+ * @param {string} path
+ */
+async function parseApp(path) {
+  let data = {}
+  try {
+    const jsonPath = join(path, 'miyanee.json')
+    const buffer = await readFile(jsonPath)
+    const json = JSON.parse(buffer.toString())
+
+    data = {
+      ...json,
+      index: join(path, json.index),
+      preload: join(path, json.preload)
+    }
+    // eslint-disable-next-line no-empty
+  } catch {}
+
+  return data
 }
 
 /**
@@ -60,6 +86,11 @@ export async function createIfNotExit(path) {
   }
 }
 
+/**
+ * Get all apps
+ * @param {string} path
+ * @param {string} scope
+ */
 export async function getApps(path = appPath, scope = '') {
   const results = []
   const files = await readdir(path, { withFileTypes: true })

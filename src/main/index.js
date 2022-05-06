@@ -6,12 +6,16 @@ import { request, downloadApp } from '@/utils'
 
 app.whenReady().then(() => {
   const win = new BrowserWindow({
+    width: 1600,
+    height: 800,
     webPreferences: {
       devTools: true,
-      preload: preloadUrl
+      preload: preloadUrl,
+      webviewTag: true
     }
   })
   win.loadURL(homeUrl)
+  win.webContents.openDevTools()
 
   ipcMain.on(REQUEST_CHANNEL, async (event, config) => {
     const { id, url, ...params } = config
@@ -29,10 +33,9 @@ app.whenReady().then(() => {
 
   ipcMain.on(DOWNLOAD_CHANNEL, async (event, config) => {
     const { id, object } = config
-    const finish = await downloadApp(object)
+    const data = await downloadApp(object)
 
-    console.log(finish)
-    event.reply(REQUEST_CHANNEL + id, finish)
+    event.reply(DOWNLOAD_CHANNEL + id, data)
   })
 })
 
