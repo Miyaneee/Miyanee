@@ -18,6 +18,7 @@ const slice = createSlice({
   reducers: {
     closePage(state, { payload: index }) {
       state.pages.splice(parseInt(index), 1)
+      state.show = (index - 1).toString()
     },
     showPage(state, { payload }) {
       if (typeof payload === 'string') {
@@ -35,7 +36,7 @@ const slice = createSlice({
 export const { closePage, showPage } = slice.actions
 
 /**
- *
+ * Select layout state
  * @param {*} state
  * @returns {typeof initialState}
  */
