@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import layout from './layout'
-import plguins from './plugins'
+import apps from './apps'
 
 export default configureStore({
   reducer: {
     layout,
-    plguins
+    apps
   }
 })
