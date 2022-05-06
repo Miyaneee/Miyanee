@@ -1,9 +1,12 @@
+import { Suspense, lazy } from 'react'
 import Nav from '@rsuite/responsive-nav'
+import { Reload } from '@rsuite/icons'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectLayout, showPage, closePage } from '@/store/layout'
 import Home from '@/components/Home/Home'
-import Plugin from '@/components/Plugin/Plugin'
 import '@/App.less'
+
+const Viewer = lazy(() => import('@/components/Viewer/Viewer'))
 
 function App() {
   const layout = useSelector(selectLayout)
@@ -25,10 +28,12 @@ function App() {
         ))}
       </Nav>
       <div className="content">
-        {layout.pages.map((item, i) => {
-          const Component = i ? Plugin : Home
-          return <Component key={item.key} show={layout.show === item.key} />
-        })}
+        <Suspense fallback={<Reload spin />}>
+          {layout.pages.map((page, i) => {
+            const Component = i ? Viewer : Home
+            return <Component key={page.key} show={layout.show === page.key} params={page.params} />
+          })}
+        </Suspense>
       </div>
     </div>
   )
