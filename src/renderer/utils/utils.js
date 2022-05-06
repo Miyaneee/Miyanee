@@ -15,3 +15,20 @@ export function downloadApp(object) {
     })
   })
 }
+
+/**
+ * Remove item from array
+ * @param {array} arr
+ * @param {function} fn
+ */
+export function removeBy(arr, fn) {
+  let i = 0
+  const { length } = arr
+  while (i < length) {
+    if (fn(arr[i], i)) {
+      arr.splice(i, 1)
+      break
+    }
+    i++
+  }
+}
