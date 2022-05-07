@@ -1,8 +1,11 @@
 import { mkdir, cp, readdir, access, readFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { createRequire } from 'module'
 import fetch from 'node-fetch'
-import { tgz } from 'compressing'
 import { appPath } from '../config'
+
+const require = createRequire(import.meta.url)
+const { tgz } = require('compressing')
 
 /**
  * Download miyanee app
