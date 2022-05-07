@@ -2,8 +2,8 @@
 
 ## Features
 
-- Search apps from npm
-- Download and update apps
-- Show app list
-- App tab to use app
-- Tabs to switch app
+- Search apps from npm.
+- Download and update apps.
+- Show app list.
+- Tab page for using app.
+- Tabs for switching app.
