@@ -36,6 +36,10 @@
     "package": "node scripts/clear.js && npm run build && electron-builder --config electron-builder.config.js",
     "lint": "eslint ./src/**/*.{js,jsx} --max-warnings 0"
   },
+  "dependencies": {
+    "compressing": "^1.5.1",
+    "electron-store": "^8.0.1"
+  },
   "devDependencies": {
     "@nabla/vite-plugin-eslint": "^1.4.0",
     "@reduxjs/toolkit": "^1.7.1",
@@ -43,7 +47,6 @@
     "@rsuite/responsive-nav": "^5.0.1",
     "@vitejs/plugin-react": "^1.0.7",
     "classnames": "^2.3.1",
-    "compressing": "^1.5.1",
     "dotenv": "^16.0.0",
     "electron": "^18.0.4",
     "electron-builder": "^23.0.3",
