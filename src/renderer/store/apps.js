@@ -1,45 +1,43 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { removeBy } from '@/utils'
-
-const initialState = [
-  // {
-  //   name: 'DarkSouls Save Manager',
-  //   packageName: '@miyaneee/image-to-base64',
-  //   description:
-  //     'Simple app of converting image to base64, support image file upload, clipborad data, net image url.',
-  //   index: 'E:/Projects/@miyaneee/image-to-base64/dist/index.html',
-  //   icon: 'E:/Projects/@miyaneee/image-to-base64/dist/assets/logo.75c2f664.png',
-  //   preload: 'E:/Projects/@miyaneee/image-to-base64/dist/preload.js',
-  //   ready: true
-  // }
-]
 
 const slice = createSlice({
   name: 'apps',
-  initialState,
+  initialState: [],
   reducers: {
+    clearApps(state) {
+      while (state[0]) {
+        state.shift()
+      }
+    },
+    getAllApps(state, { payload: apps }) {
+      state.push(...apps)
+    },
     startDownload(state, { payload }) {
-      state.push(payload)
+      const index = state.findIndex(app => app.packageName === payload.packageName)
+      if (index === -1) {
+        state.push(payload)
+      } else {
+        state[index].downloading = true
+      }
     },
     handleDownloadFail(state, { payload: packageName }) {
-      removeBy(state, app => app.packageName === packageName)
+      const index = state.findIndex(app => app.packageName === packageName)
+      const app = state[index]
+      if (!app.ready) {
+        state.splice(index, 1)
+        return
+      }
+      state[index].downloading = false
     },
     handledownloadSuccess(state, { payload }) {
-      let i = 0
-      const { length } = state
-      while (i < length) {
-        if (state[i].packageName === payload.packageName) {
-          state[i] = { ...payload }
-          state[i].ready = true
-          break
-        }
-        i++
-      }
+      const index = state.findIndex(app => app.packageName === payload.packageName)
+      state[index] = { ...payload }
     }
   }
 })
 
-export const { startDownload, handleDownloadFail, handledownloadSuccess } = slice.actions
+export const { clearApps, getAllApps, startDownload, handleDownloadFail, handledownloadSuccess } =
+  slice.actions
 
 /**
  * Select app state

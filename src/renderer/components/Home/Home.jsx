@@ -1,11 +1,18 @@
-import { useState, memo } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { InputGroup, Input, Whisper, Popover, Button } from 'rsuite'
 import { Search, CheckRound } from '@rsuite/icons'
-import { selectApps, startDownload, handleDownloadFail, handledownloadSuccess } from '@/store/apps'
+import {
+  clearApps,
+  selectApps,
+  getAllApps,
+  startDownload,
+  handleDownloadFail,
+  handledownloadSuccess
+} from '@/store/apps'
 import { selectLayout, showPage } from '@/store/layout'
 import { useSelector, useDispatch } from 'react-redux'
 import cls from 'classnames'
-import { request, downloadApp } from '@/utils'
+import { request, downloadApp, getApps } from '@/utils'
 import './Home.less'
 
 function Home({ show }) {
@@ -16,6 +23,11 @@ function Home({ show }) {
   const [searching, setSearching] = useState(false)
   const [results, setResults] = useState([])
 
+  useEffect(() => {
+    getApps().then(apps => dispatch(getAllApps(apps)))
+    return () => dispatch(clearApps())
+  }, [dispatch])
+
   async function search() {
     setSearching(true)
     const [err, res] = await request(
@@ -25,7 +37,6 @@ function Home({ show }) {
       console.log(err)
       return
     }
-    console.log(res.data)
     setResults(res.data.objects)
   }
   function handleChange(value) {
@@ -34,15 +45,15 @@ function Home({ show }) {
     }
     setValue(value)
   }
-  function openApp(plugin) {
-    const opened = layout.pages.find(page => page.label === plugin.name)
+  function openApp(app) {
+    const opened = layout.pages.find(page => page.label === app.name)
     if (opened) {
-      dispatch(showPage(opened.label))
+      dispatch(showPage(opened.key))
     } else {
       dispatch(
         showPage({
-          label: plugin.name,
-          params: { ...plugin }
+          label: app.name,
+          params: { ...app }
         })
       )
     }
@@ -64,33 +75,44 @@ function Home({ show }) {
 const AppList = memo(({ apps, onClick }) => {
   return (
     <ul className="apps">
-      {apps.map((app, i) => (
-        <li key={i} onClick={() => onClick(app)}>
-          <div className="title">
-            <span>{app.name}</span>
-            {app.isOffical && <OfficalMark />}
-          </div>
-          <div className="desc">{app.description}</div>
-        </li>
-      ))}
+      {apps.map((app, i) => {
+        const { name, isOffical, description, author, keywords = [], version } = app
+        return (
+          <li key={i} onClick={() => onClick(app)}>
+            <div className="title">
+              <span>{name}</span>
+              {isOffical && <OfficalMark />}
+            </div>
+            <div className="desc">{description}</div>
+            <div className="author">author: {author}</div>
+            <div className="meta">
+              {keywords.map(keyword => (
+                <div key={keyword} className="tag">
+                  {keyword}
+                </div>
+              ))}
+            </div>
+            <div className="version">{version}</div>
+          </li>
+        )
+      })}
     </ul>
   )
 })
 
 const ResultList = memo(({ results, onOpen }) => {
   const apps = useSelector(selectApps)
-  console.log(apps)
   const dispatch = useDispatch()
   async function download(object) {
     const packageName = object.package.name
     dispatch(
       startDownload({
         packageName,
-        ready: false
+        ready: false,
+        downloading: true
       })
     )
     const data = await downloadApp(object)
-    console.log('data', data)
     if (!data) {
       dispatch(handleDownloadFail(packageName))
       return
@@ -104,8 +126,9 @@ const ResultList = memo(({ results, onOpen }) => {
         const isOffical = 'miyaneee' === scope
         const app = apps.find(app => app.packageName === name)
         const shouldDownload = !app
-        const downloading = app && !app.ready
+        const downloading = app && app.downloading
         const available = app && app.ready
+        const shouldUpdate = available && version !== app.version
         return (
           <li key={i}>
             <div className="title">
@@ -122,18 +145,28 @@ const ResultList = memo(({ results, onOpen }) => {
             </div>
             <div className="version">{version}</div>
             <div className="operation">
+              {shouldUpdate && !downloading && (
+                <Button
+                  size="sm"
+                  style={{ marginRight: 8 }}
+                  appearance="primary"
+                  onClick={() => download(result)}
+                >
+                  更新
+                </Button>
+              )}
               {shouldDownload && (
-                <Button appearance="primary" onClick={() => download(result)}>
+                <Button size="sm" appearance="primary" onClick={() => download(result)}>
                   下载
                 </Button>
               )}
               {downloading && (
-                <Button appearance="primary" disabled>
+                <Button size="sm" appearance="primary" disabled>
                   下载中...
                 </Button>
               )}
-              {available && (
-                <Button appearance="primary" color="green" onClick={() => onOpen(app)}>
+              {available && !downloading && (
+                <Button size="sm" appearance="primary" color="green" onClick={() => onOpen(app)}>
                   打开
                 </Button>
               )}

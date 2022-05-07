@@ -15,12 +15,13 @@
     user-select: none;
     font-size: 18px;
     display: flex;
+    align-items: flex-start;
     flex-wrap: wrap;
 
     @mr: 20px;
     li {
       width: 100%;
-      height: 140px;
+      height: 170px;
       flex-grow: 0;
       flex-shrink: 0;
       margin-right: @mr;
@@ -31,6 +32,7 @@
       border-radius: 5px;
       cursor: pointer;
       transition: 0.25s ease-in-out;
+      position: relative;
 
       &:hover {
         background: #eee;
@@ -65,6 +67,10 @@
         }
       }
     }
+    .author {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
   }
 
   ul.results {
@@ -78,28 +84,6 @@
       margin-bottom: 20px;
       border: 1px solid #ddd;
       position: relative;
-    }
-    .meta {
-      display: flex;
-      align-items: center;
-      user-select: none;
-    }
-    .tag {
-      color: #b71540;
-      background: #eee;
-      padding: 4px 6px;
-      font-size: 14px;
-      margin-right: 10px;
-    }
-    .version {
-      position: absolute;
-      top: 14px;
-      right: 16px;
-      background: #b71540;
-      color: #fff;
-      font-size: 13px;
-      padding: 2px 8px;
-      user-select: none;
     }
     .operation {
       position: absolute;
@@ -122,5 +106,27 @@
   .desc {
     font-size: 15px;
     margin-bottom: 15px;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    user-select: none;
+  }
+  .tag {
+    color: #b71540;
+    background: #eee;
+    padding: 4px 6px;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  .version {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: #b71540;
+    color: #fff;
+    font-size: 13px;
+    padding: 2px 8px;
+    user-select: none;
   }
 }

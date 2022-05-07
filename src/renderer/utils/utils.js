@@ -1,6 +1,19 @@
 import { rendererSend, rendererOnce } from './preload'
-import { DOWNLOAD_CHANNEL } from '@shared'
+import { DOWNLOAD_CHANNEL, GET_APP_LIST_CHANNEL } from '@shared'
 import { v4 as uuid } from 'uuid'
+
+/**
+ * Get all apps
+ */
+export function getApps() {
+  return new Promise(reslove => {
+    const id = uuid()
+    rendererSend(GET_APP_LIST_CHANNEL, id)
+    rendererOnce(GET_APP_LIST_CHANNEL + id, (_, data) => {
+      reslove(data)
+    })
+  })
+}
 
 /**
  * Download miyanee app
