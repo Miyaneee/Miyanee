@@ -41,6 +41,8 @@ const config = {
         'electron',
         'compressing',
         'electron-store',
+        'os-proxy-config',
+        'https-proxy-agent',
         ...builtinModules.flatMap(p => [p, `node:${p}`])
       ],
       output: {

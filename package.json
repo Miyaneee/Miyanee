@@ -38,7 +38,9 @@
   },
   "dependencies": {
     "compressing": "^1.5.1",
-    "electron-store": "^8.0.1"
+    "electron-store": "^8.0.1",
+    "https-proxy-agent": "^5.0.1",
+    "os-proxy-config": "^1.1.1"
   },
   "devDependencies": {
     "@nabla/vite-plugin-eslint": "^1.4.0",
