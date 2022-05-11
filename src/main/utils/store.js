@@ -24,6 +24,12 @@ export function getApps() {
  * @param {object} appInfo
  */
 export function addApp(appInfo) {
-  const { packageName } = appInfo
-  appStore.set(packageName, appInfo)
+  try {
+    const { packageName } = appInfo
+    appStore.set(packageName, appInfo)
+    return true
+  } catch (err) {
+    console.error(err)
+    return false
+  }
 }

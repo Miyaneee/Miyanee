@@ -40,8 +40,8 @@ app.whenReady().then(() => {
       return
     }
     const data = await parseApp(appPath, object)
-    addApp(data)
-    event.reply(DOWNLOAD_CHANNEL + id, data)
+    const success = addApp(data)
+    event.reply(DOWNLOAD_CHANNEL + id, success && data)
   })
   /** Get app list */
   ipcMain.on(GET_APP_LIST_CHANNEL, async (event, id) => {

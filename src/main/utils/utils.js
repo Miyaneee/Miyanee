@@ -44,15 +44,16 @@ export async function parseApp(path, object) {
     data = {
       ...json,
       index: join(path, json.index),
-      preload: join(path, json.preload),
       isOffical: path.includes('miyaneee.'),
       author: json.author || getAuthor(object),
       packageName: object.package.name,
       version: object.package.version,
       ready: true
     }
-    // eslint-disable-next-line no-empty
-  } catch {}
+    if (json.preload) data.preload = join(path, json.preload)
+  } catch (err) {
+    console.error(err)
+  }
 
   return data
 }

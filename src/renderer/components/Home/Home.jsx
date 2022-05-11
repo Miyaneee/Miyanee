@@ -1,5 +1,5 @@
 import { useState, useEffect, memo } from 'react'
-import { InputGroup, Input, Whisper, Popover, Button } from 'rsuite'
+import { InputGroup, Input, Whisper, Popover, Button, toaster, Message } from 'rsuite'
 import { Search, CheckRound } from '@rsuite/icons'
 import {
   clearApps,
@@ -9,6 +9,7 @@ import {
   handleDownloadFail,
   handledownloadSuccess
 } from '@/store/apps'
+import Empty from '@/components/Empty/Empty'
 import { selectLayout, showPage } from '@/store/layout'
 import { useSelector, useDispatch } from 'react-redux'
 import cls from 'classnames'
@@ -61,18 +62,30 @@ function Home({ show }) {
   return (
     <div className={cls('Home', { hide: !show })}>
       <InputGroup inside className="search">
-        <Input value={value} onChange={handleChange} />
+        <Input value={value} onChange={handleChange} placeholder="Search apps" />
         <InputGroup.Button onClick={search}>
           <Search />
         </InputGroup.Button>
       </InputGroup>
       {!searching && <AppList apps={apps} onClick={openApp} />}
-      {searching && <ResultList results={results} onOpen={openApp} />}
+      {searching && (
+        <>
+          <div style={{ marginBottom: 10 }}>
+            <Button appearance="primary" onClick={() => setSearching(false)}>
+              Back
+            </Button>
+          </div>
+          <ResultList results={results} onOpen={openApp} />
+        </>
+      )}
     </div>
   )
 }
 
 const AppList = memo(({ apps, onClick }) => {
+  if (!apps.length) {
+    return <Empty>No app yet</Empty>
+  }
   return (
     <ul className="apps">
       {apps.map((app, i) => {
@@ -103,6 +116,11 @@ const AppList = memo(({ apps, onClick }) => {
 const ResultList = memo(({ results, onOpen }) => {
   const apps = useSelector(selectApps)
   const dispatch = useDispatch()
+
+  if (!results.length) {
+    return <Empty>Apps not found</Empty>
+  }
+
   async function download(object) {
     const packageName = object.package.name
     dispatch(
@@ -115,9 +133,19 @@ const ResultList = memo(({ results, onOpen }) => {
     const data = await downloadApp(object)
     if (!data) {
       dispatch(handleDownloadFail(packageName))
+      toaster.push(
+        <Message type="error" showIcon>
+          Download fail
+        </Message>
+      )
       return
     }
     dispatch(handledownloadSuccess(data))
+    toaster.push(
+      <Message type="success" showIcon>
+        Download success
+      </Message>
+    )
   }
   return (
     <ul className="results">
@@ -152,22 +180,22 @@ const ResultList = memo(({ results, onOpen }) => {
                   appearance="primary"
                   onClick={() => download(result)}
                 >
-                  更新
+                  Update
                 </Button>
               )}
               {shouldDownload && (
                 <Button size="sm" appearance="primary" onClick={() => download(result)}>
-                  下载
+                  Download
                 </Button>
               )}
               {downloading && (
                 <Button size="sm" appearance="primary" disabled>
-                  下载中...
+                  Downloading...
                 </Button>
               )}
               {available && !downloading && (
                 <Button size="sm" appearance="primary" color="green" onClick={() => onOpen(app)}>
-                  打开
+                  Open
                 </Button>
               )}
             </div>
@@ -180,7 +208,7 @@ const ResultList = memo(({ results, onOpen }) => {
 
 function OfficalMark() {
   return (
-    <Whisper trigger="hover" speaker={<Popover>Offical Plugin</Popover>}>
+    <Whisper trigger="hover" speaker={<Popover>Offical App</Popover>}>
       <CheckRound color="#4cd137" />
     </Whisper>
   )
