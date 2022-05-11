@@ -50,7 +50,7 @@
     "@vitejs/plugin-react": "^1.0.7",
     "classnames": "^2.3.1",
     "dotenv": "^16.0.0",
-    "electron": "^18.0.4",
+    "electron": "^18.2.2",
     "electron-builder": "^23.0.3",
     "electron-notarize": "^1.1.1",
     "eslint": "^8.5.0",
