@@ -1,4 +1,4 @@
-import { mkdir, cp, access, readFile } from 'node:fs/promises'
+import { mkdir, cp, access, readFile, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { tgz } from 'compressing'
 import fetch from 'node-fetch'
@@ -48,6 +48,7 @@ export async function parseApp(path, object) {
       author: json.author || getAuthor(object),
       packageName: object.package.name,
       version: object.package.version,
+      dir: path,
       ready: true
     }
     if (json.preload) data.preload = join(path, json.preload)
@@ -85,5 +86,20 @@ export async function createIfNotExit(path) {
     await access(path)
   } catch {
     await mkdir(path, { recursive: true })
+  }
+}
+
+/**
+ * Uninstall app
+ * @param {object} appInfo
+ */
+export async function uninstallApp(appInfo) {
+  const { dir } = appInfo
+  try {
+    rm(dir, { recursive: true, force: true })
+    return true
+  } catch (err) {
+    console.error(err)
+    return false
   }
 }

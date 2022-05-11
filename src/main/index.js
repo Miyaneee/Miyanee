@@ -1,8 +1,13 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import { homeUrl, preloadUrl } from '@/config'
 import os from 'os'
-import { REQUEST_CHANNEL, DOWNLOAD_CHANNEL, GET_APP_LIST_CHANNEL } from '@shared'
-import { request, downloadApp, parseApp, addApp, getApps } from '@/utils'
+import {
+  REQUEST_CHANNEL,
+  DOWNLOAD_CHANNEL,
+  GET_APP_LIST_CHANNEL,
+  UNINSTALL_APP_CHANNEL
+} from '@shared'
+import { request, downloadApp, parseApp, addApp, getApps, removeApp, uninstallApp } from '@/utils'
 
 app.whenReady().then(() => {
   const win = new BrowserWindow({
@@ -42,6 +47,13 @@ app.whenReady().then(() => {
     const data = await parseApp(appPath, object)
     const success = addApp(data)
     event.reply(DOWNLOAD_CHANNEL + id, success && data)
+  })
+  /** Uninstall */
+  ipcMain.on(UNINSTALL_APP_CHANNEL, (event, config) => {
+    const { id, appInfo } = config
+    removeApp(appInfo)
+    uninstallApp(appInfo)
+    event.reply(UNINSTALL_APP_CHANNEL + id)
   })
   /** Get app list */
   ipcMain.on(GET_APP_LIST_CHANNEL, async (event, id) => {

@@ -1,3 +1,4 @@
+import { removeBy } from '@/utils'
 import { createSlice } from '@reduxjs/toolkit'
 
 const slice = createSlice({
@@ -32,12 +33,21 @@ const slice = createSlice({
     handledownloadSuccess(state, { payload }) {
       const index = state.findIndex(app => app.packageName === payload.packageName)
       state[index] = { ...payload }
+    },
+    removeApp(state, { payload: packageName }) {
+      removeBy(state, app => app.packageName === packageName)
     }
   }
 })
 
-export const { clearApps, getAllApps, startDownload, handleDownloadFail, handledownloadSuccess } =
-  slice.actions
+export const {
+  clearApps,
+  getAllApps,
+  startDownload,
+  handleDownloadFail,
+  handledownloadSuccess,
+  removeApp
+} = slice.actions
 
 /**
  * Select app state

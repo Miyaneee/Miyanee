@@ -33,3 +33,18 @@ export function addApp(appInfo) {
     return false
   }
 }
+
+/**
+ * Remove app
+ * @param {object} appInfo
+ */
+export function removeApp(appInfo) {
+  try {
+    const { packageName } = appInfo
+    appStore.delete(packageName)
+    return true
+  } catch (err) {
+    console.error(err)
+    return false
+  }
+}

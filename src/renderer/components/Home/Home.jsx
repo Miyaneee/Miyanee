@@ -7,13 +7,14 @@ import {
   getAllApps,
   startDownload,
   handleDownloadFail,
-  handledownloadSuccess
+  handledownloadSuccess,
+  removeApp
 } from '@/store/apps'
 import Empty from '@/components/Empty/Empty'
 import { selectLayout, showPage } from '@/store/layout'
 import { useSelector, useDispatch } from 'react-redux'
 import cls from 'classnames'
-import { request, downloadApp, getApps } from '@/utils'
+import { request, downloadApp, getApps, uninstallApp } from '@/utils'
 import './Home.less'
 
 function Home({ show }) {
@@ -59,6 +60,15 @@ function Home({ show }) {
       )
     }
   }
+  async function uninstall(app) {
+    await uninstallApp(app)
+    dispatch(removeApp(app.packageName))
+    toaster.push(
+      <Message type="success" showIcon>
+        App uninstalled
+      </Message>
+    )
+  }
   return (
     <div className={cls('Home', { hide: !show })}>
       <InputGroup inside className="search">
@@ -67,7 +77,7 @@ function Home({ show }) {
           <Search />
         </InputGroup.Button>
       </InputGroup>
-      {!searching && <AppList apps={apps} onClick={openApp} />}
+      {!searching && <AppList apps={apps} onOpen={openApp} onUninstall={uninstall} />}
       {searching && (
         <>
           <div style={{ marginBottom: 10 }}>
@@ -82,7 +92,7 @@ function Home({ show }) {
   )
 }
 
-const AppList = memo(({ apps, onClick }) => {
+const AppList = memo(({ apps, onOpen, onUninstall }) => {
   if (!apps.length) {
     return <Empty>No app yet</Empty>
   }
@@ -91,7 +101,7 @@ const AppList = memo(({ apps, onClick }) => {
       {apps.map((app, i) => {
         const { name, isOffical, description, author, keywords = [], version } = app
         return (
-          <li key={i} onClick={() => onClick(app)}>
+          <li key={i}>
             <div className="title">
               <span>{name}</span>
               {isOffical && <OfficalMark />}
@@ -106,6 +116,20 @@ const AppList = memo(({ apps, onClick }) => {
               ))}
             </div>
             <div className="version">{version}</div>
+            <div className="operation">
+              <Button
+                appearance="primary"
+                color="green"
+                size="sm"
+                style={{ marginRight: 8 }}
+                onClick={() => onOpen(app)}
+              >
+                Open
+              </Button>
+              <Button appearance="primary" color="red" size="sm" onClick={() => onUninstall(app)}>
+                Uninstall
+              </Button>
+            </div>
           </li>
         )
       })}

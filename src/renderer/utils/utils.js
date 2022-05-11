@@ -1,5 +1,5 @@
 import { rendererSend, rendererOnce } from './preload'
-import { DOWNLOAD_CHANNEL, GET_APP_LIST_CHANNEL } from '@shared'
+import { DOWNLOAD_CHANNEL, GET_APP_LIST_CHANNEL, UNINSTALL_APP_CHANNEL } from '@shared'
 import { v4 as uuid } from 'uuid'
 
 /**
@@ -25,6 +25,20 @@ export function downloadApp(object) {
     rendererSend(DOWNLOAD_CHANNEL, { id, object })
     rendererOnce(DOWNLOAD_CHANNEL + id, (_, data) => {
       reslove(data)
+    })
+  })
+}
+
+/**
+ * Uninstall miyanee app
+ * @param {object} appInfo
+ */
+export function uninstallApp(appInfo) {
+  return new Promise(reslove => {
+    const id = uuid()
+    rendererSend(UNINSTALL_APP_CHANNEL, { id, appInfo })
+    rendererOnce(UNINSTALL_APP_CHANNEL + id, () => {
+      reslove(true)
     })
   })
 }

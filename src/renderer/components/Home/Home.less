@@ -7,6 +7,8 @@
     margin-bottom: 20px;
   }
 
+  @px: 16px;
+  @py: 12px;
   ul.apps {
     height: calc(100% - 56px);
     overflow: auto;
@@ -26,24 +28,21 @@
       flex-shrink: 0;
       margin-right: @mr;
       margin-bottom: 20px;
-      padding: 12px 16px;
+      padding: @py @px;
       box-sizing: border-box;
       box-shadow: 0 0 0 1px #ddd;
       border-radius: 5px;
-      cursor: pointer;
-      transition: 0.25s ease-in-out;
       position: relative;
-
-      &:hover {
-        background: #eee;
-      }
     }
     @media screen and (max-width: 800px) {
-      li {
-        margin-right: 0;
+      & {
+        display: block;
+        li {
+          margin-right: 0;
+        }
       }
     }
-    @media screen and (min-width: 800px) and (max-width: 1300px) {
+    @media screen and (min-width: 800px) and (max-width: 1200px) {
       li {
         width: calc(50% - @mr / 2);
         &:nth-child(even) {
@@ -51,18 +50,18 @@
         }
       }
     }
-    @media screen and (min-width: 1300px) and (max-width: 1600px) {
+    @media screen and (min-width: 1200px) and (max-width: 1600px) {
       li {
-        width: calc(25% - @mr * 3 / 4);
-        &:nth-child(4n) {
+        width: calc(33.3% - @mr / 2);
+        &:nth-child(3n) {
           margin-right: 0;
         }
       }
     }
     @media screen and (min-width: 1600px) {
       li {
-        width: calc(20% - @mr * 4 / 5);
-        &:nth-child(5n) {
+        width: calc(25% - @mr * 3 / 4);
+        &:nth-child(4n) {
           margin-right: 0;
         }
       }
@@ -76,19 +75,13 @@
   ul.results {
     height: calc(100% - 102px);
     overflow: auto;
-    @px: 16px;
-    @py: 12px;
+
     li {
       border-radius: 6px;
       padding: @py @px;
       margin-bottom: 20px;
       border: 1px solid #ddd;
       position: relative;
-    }
-    .operation {
-      position: absolute;
-      right: @px;
-      bottom: @py;
     }
   }
 
@@ -128,5 +121,10 @@
     font-size: 13px;
     padding: 2px 8px;
     user-select: none;
+  }
+  .operation {
+    position: absolute;
+    right: @px;
+    bottom: @py;
   }
 }
