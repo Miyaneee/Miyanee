@@ -1,5 +1,5 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
-import { homeUrl, preloadUrl } from '@/config'
+import { app, BrowserWindow, ipcMain, screen } from 'electron'
+import { isDev, homeUrl, preloadUrl } from '@/config'
 import os from 'os'
 import {
   REQUEST_CHANNEL,
@@ -10,9 +10,11 @@ import {
 import { request, downloadApp, parseApp, addApp, getApps, removeApp, uninstallApp } from '@/utils'
 
 app.whenReady().then(() => {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize
+  console.log(width, height)
   const win = new BrowserWindow({
-    width: 1600,
-    height: 800,
+    minWidth: 800,
+    minHeight: 600,
     webPreferences: {
       devTools: true,
       preload: preloadUrl,
@@ -20,7 +22,10 @@ app.whenReady().then(() => {
     }
   })
   win.loadURL(homeUrl)
-  win.webContents.openDevTools()
+  win.maximize()
+  if (isDev) {
+    win.webContents.openDevTools()
+  }
 
   /** Request */
   ipcMain.on(REQUEST_CHANNEL, async (event, config) => {
