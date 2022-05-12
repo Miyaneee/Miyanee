@@ -5,14 +5,32 @@
     "node": true,
     "commonjs": true
   },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 12,
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "extends": ["eslint:recommended", "react-app", "plugin:prettier/recommended"],
-  "plugins": ["prettier"],
+  "plugins": ["@typescript-eslint", "react", "prettier"],
   "rules": {
-    "prettier/prettier": ["warn"]
+    "prettier/prettier": ["warn"],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "react/prop-types": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "17.0.2"
+    }
   },
   "ignorePatterns": ["dist", "node_modules"]
 }

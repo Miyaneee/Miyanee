@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "sourceMap": false,
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    "strict": true,
+    "isolatedModules": true,
+    "lib": ["ESNext", "dom", "dom.iterable"],
+    "types": ["node"],
+    "resolveJsonModule": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@@/*": ["../../*"],
+      "@/*": ["*"],
+      "@shared": ["../shared"]
+    },
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx",
+    "./**/*.less",
+    "../shared/**/*.ts",
+    "../../types/**/*.d.ts",
+    "../preload/preload.d.ts"
+  ]
+}

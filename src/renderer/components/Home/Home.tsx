@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from 'react'
+import { FC, useState, useEffect, memo } from 'react'
 import { InputGroup, Input, Whisper, Popover, Button, toaster, Message } from 'rsuite'
 import { Search, CheckRound } from '@rsuite/icons'
 import {
@@ -8,46 +8,51 @@ import {
   startDownload,
   handleDownloadFail,
   handledownloadSuccess,
-  removeApp
+  removeApp,
+  AppInfoState
 } from '@/store/apps'
 import Empty from '@/components/Empty/Empty'
 import { selectLayout, showPage } from '@/store/layout'
 import { useSelector, useDispatch } from 'react-redux'
 import cls from 'classnames'
 import { request, downloadApp, getApps, uninstallApp } from '@/utils'
+import { NpmObject } from '@shared'
 import './Home.less'
 
-function Home({ show }) {
+const Home: FC<{ show: boolean }> = ({ show }) => {
   const apps = useSelector(selectApps)
   const layout = useSelector(selectLayout)
   const dispatch = useDispatch()
-  const [value, setValue] = useState('')
-  const [searching, setSearching] = useState(false)
-  const [results, setResults] = useState([])
+  const [value, setValue] = useState<string>('')
+  const [searching, setSearching] = useState<boolean>(false)
+  const [objects, setObjects] = useState<NpmObject[]>([])
 
   useEffect(() => {
     getApps().then(apps => dispatch(getAllApps(apps)))
-    return () => dispatch(clearApps())
+    return () => {
+      dispatch(clearApps())
+    }
   }, [dispatch])
 
   async function search() {
     setSearching(true)
-    const [err, res] = await request(
+    const [err, data] = await request(
       `https://registry.npmjs.com/-/v1/search?from=0&text=keywords:miyanee-app is:unstable not:unstable ${value}&quality=0.5&popularity=1.0&maintenance=0.1`
     )
     if (err) {
-      console.log(err)
+      console.error(err)
       return
     }
-    setResults(res.data.objects)
+
+    setObjects(data.objects)
   }
-  function handleChange(value) {
+  function handleChange(value: string) {
     if (!value) {
       setSearching(false)
     }
     setValue(value)
   }
-  function openApp(app) {
+  function openApp(app: AppInfoState) {
     const opened = layout.pages.find(page => page.label === app.name)
     if (opened) {
       dispatch(showPage(opened.key))
@@ -60,7 +65,7 @@ function Home({ show }) {
       )
     }
   }
-  async function uninstall(app) {
+  async function uninstall(app: AppInfoState) {
     await uninstallApp(app)
     dispatch(removeApp(app.packageName))
     toaster.push(
@@ -85,14 +90,20 @@ function Home({ show }) {
               Back
             </Button>
           </div>
-          <ResultList results={results} onOpen={openApp} />
+          <ResultList objects={objects} onOpen={openApp} />
         </>
       )}
     </div>
   )
 }
 
-const AppList = memo(({ apps, onOpen, onUninstall }) => {
+type AppListProps = {
+  apps: AppInfoState[]
+  onOpen(app: AppInfoState): void
+  onUninstall(app: AppInfoState): void
+}
+
+const AppList = memo<AppListProps>(function AppList({ apps, onOpen, onUninstall }) {
   if (!apps.length) {
     return <Empty>No app yet</Empty>
   }
@@ -137,15 +148,20 @@ const AppList = memo(({ apps, onOpen, onUninstall }) => {
   )
 })
 
-const ResultList = memo(({ results, onOpen }) => {
+type ResultListProps = {
+  objects: NpmObject[]
+  onOpen(app: AppInfoState): void
+}
+
+const ResultList = memo<ResultListProps>(function ResultList({ objects, onOpen }) {
   const apps = useSelector(selectApps)
   const dispatch = useDispatch()
 
-  if (!results.length) {
+  if (!objects.length) {
     return <Empty>Apps not found</Empty>
   }
 
-  async function download(object) {
+  async function download(object: NpmObject) {
     const packageName = object.package.name
     dispatch(
       startDownload({
@@ -173,8 +189,8 @@ const ResultList = memo(({ results, onOpen }) => {
   }
   return (
     <ul className="results">
-      {results.map((result, i) => {
-        const { name, description, scope, version, keywords = [] } = result.package
+      {objects.map((obj, i) => {
+        const { name, description, scope, version, keywords = [] } = obj.package
         const isOffical = 'miyaneee' === scope
         const app = apps.find(app => app.packageName === name)
         const shouldDownload = !app
@@ -202,13 +218,13 @@ const ResultList = memo(({ results, onOpen }) => {
                   size="sm"
                   style={{ marginRight: 8 }}
                   appearance="primary"
-                  onClick={() => download(result)}
+                  onClick={() => download(obj)}
                 >
                   Update
                 </Button>
               )}
               {shouldDownload && (
-                <Button size="sm" appearance="primary" onClick={() => download(result)}>
+                <Button size="sm" appearance="primary" onClick={() => download(obj)}>
                   Download
                 </Button>
               )}
@@ -233,7 +249,7 @@ const ResultList = memo(({ results, onOpen }) => {
 function OfficalMark() {
   return (
     <Whisper trigger="hover" speaker={<Popover>Offical App</Popover>}>
-      <CheckRound color="#4cd137" />
+      <CheckRound fill="#4cd137" />
     </Whisper>
   )
 }

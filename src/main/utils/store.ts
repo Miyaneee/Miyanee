@@ -1,4 +1,5 @@
 import Store from 'electron-store'
+import type { AppInfo } from '@shared'
 import { appPath } from '../config'
 
 export const appStore = new Store({
@@ -23,7 +24,7 @@ export function getApps() {
  * Add app info
  * @param {object} appInfo
  */
-export function addApp(appInfo) {
+export function addApp(appInfo: AppInfo) {
   try {
     const { packageName } = appInfo
     appStore.set(packageName, appInfo)
@@ -38,7 +39,7 @@ export function addApp(appInfo) {
  * Remove app
  * @param {object} appInfo
  */
-export function removeApp(appInfo) {
+export function removeApp(appInfo: AppInfo) {
   try {
     const { packageName } = appInfo
     appStore.delete(packageName)

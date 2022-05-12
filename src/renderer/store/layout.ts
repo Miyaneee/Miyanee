@@ -1,13 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit'
+import type { ViewerState } from '@/components/Viewer/Viewer'
 
-const initialState = {
+type HomePage = {
+  key: string
+  label: string
+}
+
+export interface AppPage extends HomePage {
+  params: ViewerState['params']
+}
+
+export type LayoutState = {
+  show: string
+  pages: [HomePage, ...AppPage[]]
+}
+
+const initialState: LayoutState = {
   show: '0',
   pages: [
     {
       key: '0',
-      label: 'Home',
-      component: 'Home',
-      params: {}
+      label: 'Home'
     }
   ]
 }
@@ -26,7 +39,7 @@ const slice = createSlice({
       }
       if (typeof payload === 'object') {
         const key = state.pages.length.toString()
-        state.pages.push({ ...payload, key, component: 'Plugin' })
+        state.pages.push({ ...payload, key })
         state.show = key
       }
     }
@@ -40,6 +53,6 @@ export const { closePage, showPage } = slice.actions
  * @param {*} state
  * @returns {typeof initialState}
  */
-export const selectLayout = state => state.layout
+export const selectLayout = (state: { layout: LayoutState }) => state.layout
 
 export default slice.reducer

@@ -1,7 +1,6 @@
+import { join } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import eslint from '@nabla/vite-plugin-eslint'
-import path from 'path'
 import { chrome } from '../target.json'
 
 export default defineConfig({
@@ -11,26 +10,26 @@ export default defineConfig({
     alias: [
       {
         find: /^@@\/(.*)/,
-        replacement: path.join(__dirname, '../..', '$1')
+        replacement: join(__dirname, '../..', '$1')
       },
       {
         find: /^@\/(.*)/,
-        replacement: path.join(__dirname, '$1')
+        replacement: join(__dirname, '$1')
       },
       {
         find: /^@shared$/,
-        replacement: path.join(__dirname, '../shared')
+        replacement: join(__dirname, '../shared')
       }
     ]
   },
-  plugins: [react(), eslint()],
+  plugins: [react()],
   server: {
-    port: process.env.VITE_PORT
+    port: parseInt(process.env.VITE_PORT as string)
   },
   build: {
     sourcemap: true,
     target: `chrome${chrome}`,
-    outDir: path.join(__dirname, '../../dist/build'),
+    outDir: join(__dirname, '../../dist/build'),
     emptyOutDir: true
   }
 })

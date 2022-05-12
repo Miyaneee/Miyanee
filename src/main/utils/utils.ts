@@ -1,14 +1,15 @@
 import { mkdir, cp, access, readFile, rm } from 'node:fs/promises'
 import { join } from 'node:path'
-import { tgz } from 'compressing'
+import { tgz, sourceType } from 'compressing'
 import fetch from 'node-fetch'
+import { NpmObject, MiayneeAppConfig, AppInfo } from '@shared'
 import { appPath } from '../config'
 
 /**
  * Download miyanee app
- * @param {object} object
+ * @param object
  */
-export async function downloadApp(object) {
+export async function downloadApp(object: NpmObject) {
   const { name, scope, version } = object.package
   const withScope = scope !== 'unscoped'
   const nameStr = withScope ? name.split('/')[1] : name
@@ -16,7 +17,7 @@ export async function downloadApp(object) {
 
   const response = await fetch(url)
 
-  if (!response.ok) {
+  if (!response.ok || !response.body) {
     return false
   }
 
@@ -24,7 +25,7 @@ export async function downloadApp(object) {
   const path = join(appPath, `${author}.${nameStr}`)
 
   await createIfNotExit(appPath)
-  await tgz.uncompress(response.body, path)
+  await tgz.uncompress(response.body as sourceType, path)
   await cp(join(path, 'package'), path, { recursive: true })
 
   return path
@@ -32,14 +33,14 @@ export async function downloadApp(object) {
 
 /**
  * Parse miyanee.json to get app info
- * @param {string} path
+ * @param path
  */
-export async function parseApp(path, object) {
-  let data = {}
+export async function parseApp(path: string, object: NpmObject) {
+  let data = {} as AppInfo
   try {
     const jsonPath = join(path, 'miyanee.json')
     const buffer = await readFile(jsonPath)
-    const json = JSON.parse(buffer.toString())
+    const json: MiayneeAppConfig = JSON.parse(buffer.toString())
 
     data = {
       ...json,
@@ -61,9 +62,9 @@ export async function parseApp(path, object) {
 
 /**
  * Get author of app
- * @param {object} object
+ * @param object
  */
-function getAuthor(object) {
+function getAuthor(object: NpmObject) {
   const { scope, author, publisher } = object.package
   let result
   if (scope !== 'unscoped') {
@@ -79,9 +80,9 @@ function getAuthor(object) {
 
 /**
  * Create dir if it doesn't exist
- * @param {string} path
+ * @param path
  */
-export async function createIfNotExit(path) {
+export async function createIfNotExit(path: string) {
   try {
     await access(path)
   } catch {
@@ -93,7 +94,7 @@ export async function createIfNotExit(path) {
  * Uninstall app
  * @param {object} appInfo
  */
-export async function uninstallApp(appInfo) {
+export async function uninstallApp(appInfo: AppInfo) {
   const { dir } = appInfo
   try {
     rm(dir, { recursive: true, force: true })

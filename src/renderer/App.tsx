@@ -2,7 +2,7 @@ import { Suspense, lazy } from 'react'
 import Nav from '@rsuite/responsive-nav'
 import { Reload } from '@rsuite/icons'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectLayout, showPage, closePage } from '@/store/layout'
+import { selectLayout, showPage, closePage, LayoutState } from '@/store/layout'
 import Home from '@/components/Home/Home'
 import '@/App.less'
 
@@ -29,14 +29,26 @@ function App() {
       </Nav>
       <div className="content">
         <Suspense fallback={<Reload spin />}>
-          {layout.pages.map((page, i) => {
-            const Component = i ? Viewer : Home
-            return <Component key={page.key} show={layout.show === page.key} params={page.params} />
-          })}
+          {renderComponents(layout.show, layout.pages)}
         </Suspense>
       </div>
     </div>
   )
+}
+
+function renderComponents(show: string, pages: LayoutState['pages']) {
+  const [hompage, ...appPages] = pages
+  const result = []
+  result[0] = <Home key={hompage.key} show={show === hompage.key} />
+  const { length } = appPages
+  let i = 0
+  while (i < length) {
+    const page = appPages[i]
+    result[i + 1] = <Viewer key={page.key} show={show === page.key} params={page.params} />
+    i++
+  }
+
+  return result
 }
 
 export default App

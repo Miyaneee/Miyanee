@@ -1,17 +1,16 @@
-import { app, BrowserWindow, ipcMain, screen } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import { isDev, homeUrl, preloadUrl } from '@/config'
-import os from 'os'
+import { platform } from 'node:os'
 import {
   REQUEST_CHANNEL,
   DOWNLOAD_CHANNEL,
   GET_APP_LIST_CHANNEL,
-  UNINSTALL_APP_CHANNEL
+  UNINSTALL_APP_CHANNEL,
+  IpcRequestOptions
 } from '@shared'
 import { request, downloadApp, parseApp, addApp, getApps, removeApp, uninstallApp } from '@/utils'
 
 app.whenReady().then(() => {
-  const { width, height } = screen.getPrimaryDisplay().workAreaSize
-  console.log(width, height)
   const win = new BrowserWindow({
     minWidth: 800,
     minHeight: 600,
@@ -28,18 +27,16 @@ app.whenReady().then(() => {
   }
 
   /** Request */
-  ipcMain.on(REQUEST_CHANNEL, async (event, config) => {
+  ipcMain.on(REQUEST_CHANNEL, async (event, config: IpcRequestOptions) => {
     const { id, url, ...params } = config
     const [err, res] = await request(url, params)
-    let reply
 
     if (err) {
-      reply = { ...JSON.parse(JSON.stringify(err)), config }
-    } else {
-      const { status } = res
-      reply = { config, status, data: await res.json() }
+      event.reply(REQUEST_CHANNEL + id, [JSON.parse(JSON.stringify(err))])
+      return
     }
-    event.reply(REQUEST_CHANNEL + id, reply)
+    const data = await res.json()
+    event.reply(REQUEST_CHANNEL + id, [null, data])
   })
   /** Download */
   ipcMain.on(DOWNLOAD_CHANNEL, async (event, config) => {
@@ -68,7 +65,7 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', () => {
-  if (os.platform !== 'darwin') {
+  if (platform() !== 'darwin') {
     app.quit()
   }
 })

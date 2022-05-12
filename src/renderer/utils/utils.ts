@@ -1,5 +1,11 @@
 import { rendererSend, rendererOnce } from './preload'
-import { DOWNLOAD_CHANNEL, GET_APP_LIST_CHANNEL, UNINSTALL_APP_CHANNEL } from '@shared'
+import {
+  DOWNLOAD_CHANNEL,
+  GET_APP_LIST_CHANNEL,
+  UNINSTALL_APP_CHANNEL,
+  NpmObject,
+  AppInfo
+} from '@shared'
 import { v4 as uuid } from 'uuid'
 
 /**
@@ -17,9 +23,9 @@ export function getApps() {
 
 /**
  * Download miyanee app
- * @param {object} object
+ * @param object
  */
-export function downloadApp(object) {
+export function downloadApp(object: NpmObject) {
   return new Promise(reslove => {
     const id = uuid()
     rendererSend(DOWNLOAD_CHANNEL, { id, object })
@@ -31,9 +37,9 @@ export function downloadApp(object) {
 
 /**
  * Uninstall miyanee app
- * @param {object} appInfo
+ * @param appInfo
  */
-export function uninstallApp(appInfo) {
+export function uninstallApp(appInfo: AppInfo) {
   return new Promise(reslove => {
     const id = uuid()
     rendererSend(UNINSTALL_APP_CHANNEL, { id, appInfo })
@@ -45,10 +51,10 @@ export function uninstallApp(appInfo) {
 
 /**
  * Remove item from array
- * @param {array} arr
- * @param {function} fn
+ * @param arr
+ * @param fn
  */
-export function removeBy(arr, fn) {
+export function removeBy<T>(arr: T[], fn: (item: T, i: number) => boolean) {
   let i = 0
   const { length } = arr
   while (i < length) {

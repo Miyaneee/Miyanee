@@ -1,7 +1,8 @@
+import { FC } from 'react'
 import empty from '@/assets/empty.svg'
 import './Empty.less'
 
-function Empty({ children }) {
+const Empty: FC = ({ children }) => {
   return (
     <div className="Empty">
       <img src={empty} alt="empty" draggable="false" />

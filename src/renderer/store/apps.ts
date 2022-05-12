@@ -1,9 +1,14 @@
 import { removeBy } from '@/utils'
 import { createSlice } from '@reduxjs/toolkit'
+import type { AppInfo } from '@shared'
+
+export interface AppInfoState extends AppInfo {
+  downloading?: boolean
+}
 
 const slice = createSlice({
   name: 'apps',
-  initialState: [],
+  initialState: [] as AppInfoState[],
   reducers: {
     clearApps(state) {
       while (state[0]) {
@@ -35,7 +40,7 @@ const slice = createSlice({
       state[index] = { ...payload }
     },
     removeApp(state, { payload: packageName }) {
-      removeBy(state, app => app.packageName === packageName)
+      removeBy(state, (app: AppInfoState) => app.packageName === packageName)
     }
   }
 })
@@ -51,9 +56,9 @@ export const {
 
 /**
  * Select app state
- * @param {*} state
- * @returns {typeof initialState}
+ * @param state
+ * @returns
  */
-export const selectApps = state => state.apps
+export const selectApps = (state: { apps: AppInfoState[] }) => state.apps
 
 export default slice.reducer
