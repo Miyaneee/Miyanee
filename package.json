@@ -43,7 +43,7 @@
     "os-proxy-config": "^1.1.1"
   },
   "devDependencies": {
-    "@reduxjs/toolkit": "^1.7.1",
+    "@reduxjs/toolkit": "^1.8.2",
     "@rsuite/icons": "^1.0.2",
     "@rsuite/responsive-nav": "^5.0.1",
     "@types/react": "17.0.2",
@@ -54,10 +54,10 @@
     "@vitejs/plugin-react": "^1.0.7",
     "classnames": "^2.3.1",
     "dotenv": "^16.0.0",
-    "electron": "^18.2.2",
+    "electron": "^19.0.4",
     "electron-builder": "^23.0.3",
     "electron-notarize": "^1.1.1",
-    "eslint": "^8.5.0",
+    "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
@@ -67,10 +67,10 @@
     "prettier": "^2.5.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-redux": "^8.0.0",
-    "redux": "^4.1.2",
-    "rsuite": "^5.4.0",
-    "typescript": "^4.6.4",
+    "react-redux": "^8.0.2",
+    "redux": "^4.2.0",
+    "rsuite": "^5.15.1",
+    "typescript": "^4.7.3",
     "uuid": "^8.3.2",
     "vite": "^2.7.2"
   }
