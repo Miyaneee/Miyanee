@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "resolveJsonModule": true,
-
     "baseUrl": ".",
     "paths": {
       "@@/*": ["../../*"],
@@ -9,5 +8,5 @@
       "@shared": ["../shared"]
     }
   },
-  "include": ["./**/*.ts", "./exposed.d.ts", "../../types/**/*.ts", "../../package.json"]
+  "include": ["./**/*.ts", "../../types/**/*.ts", "../../package.json"]
 }

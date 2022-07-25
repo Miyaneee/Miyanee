@@ -6,15 +6,12 @@ const { config } = require('dotenv')
 
 config()
 
-/** @type 'production' | 'development'' */
-const mode = process.env.MODE
-
 /** @type {import('vite').LogLevel} */
 const LOG_LEVEL = 'info'
 
 /** @type {import('vite').InlineConfig} */
 const sharedConfig = {
-  mode,
+  mode: 'development',
   build: {
     watch: {}
   },

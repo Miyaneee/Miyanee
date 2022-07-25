@@ -1,10 +1,9 @@
 import { join } from 'node:path'
 import { builtinModules } from 'module'
 import { defineConfig } from 'vite'
-import { chrome } from '../target.json'
+import { chrome } from '../shared/targets.json'
 
 export default defineConfig({
-  mode: process.env.MODE || 'production',
   root: __dirname,
   envDir: process.cwd(),
   resolve: {
@@ -18,8 +17,8 @@ export default defineConfig({
         replacement: join(__dirname, '$1')
       },
       {
-        find: /^@shared$/,
-        replacement: join(__dirname, '../shared')
+        find: /^@shared\/(.*)/,
+        replacement: join(__dirname, '../shared', '$1')
       }
     ]
   },
@@ -27,7 +26,7 @@ export default defineConfig({
     sourcemap: 'inline',
     target: `chrome${chrome}`,
     outDir: join(__dirname, '../../dist/build'),
-    minify: process.env.MODE !== 'development',
+    minify: true,
     lib: {
       entry: 'preload.ts',
       formats: ['cjs']

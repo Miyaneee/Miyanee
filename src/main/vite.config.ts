@@ -1,10 +1,10 @@
-import { join } from 'path'
-import { builtinModules } from 'module'
+import { join } from 'node:path'
+import { builtinModules } from 'node:module'
 import { defineConfig } from 'vite'
-import { node } from '../target.json'
+import { node } from '../shared/targets.json'
+import { dependencies } from '../../package.json'
 
 export default defineConfig({
-  mode: process.env.MODE || 'production',
   root: __dirname,
   envDir: process.cwd(),
   resolve: {
@@ -18,8 +18,8 @@ export default defineConfig({
         replacement: join(__dirname, '$1')
       },
       {
-        find: /^@shared$/,
-        replacement: join(__dirname, '../shared')
+        find: /^@shared\/(.*)/,
+        replacement: join(__dirname, '../shared', '$1')
       }
     ]
   },
@@ -27,7 +27,7 @@ export default defineConfig({
     sourcemap: 'inline',
     target: `node${node}`,
     outDir: join(__dirname, '../../dist/build'),
-    minify: process.env.MODE !== 'development',
+    minify: true,
     lib: {
       entry: 'index.ts',
       formats: ['cjs']
@@ -35,11 +35,8 @@ export default defineConfig({
     rollupOptions: {
       external: [
         'electron',
-        'compressing',
-        'electron-store',
-        'os-proxy-config',
-        'https-proxy-agent',
-        ...builtinModules.flatMap(p => [p, `node:${p}`])
+        ...Object.keys(dependencies),
+        ...builtinModules.flatMap(name => [name, `node:${name}`])
       ],
       output: {
         entryFileNames: '[name].js'

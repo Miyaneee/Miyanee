@@ -1,7 +1,7 @@
 import { join } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { chrome } from '../target.json'
+import { chrome } from '../shared/targets.json'
 
 export default defineConfig({
   root: __dirname,
@@ -17,15 +17,12 @@ export default defineConfig({
         replacement: join(__dirname, '$1')
       },
       {
-        find: /^@shared$/,
-        replacement: join(__dirname, '../shared')
+        find: /^@shared\/(.*)/,
+        replacement: join(__dirname, '../shared', '$1')
       }
     ]
   },
   plugins: [react()],
-  server: {
-    port: parseInt(process.env.VITE_PORT as string)
-  },
   build: {
     sourcemap: true,
     target: `chrome${chrome}`,

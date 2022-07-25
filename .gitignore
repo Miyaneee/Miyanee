@@ -1,6 +1,15 @@
+# Denpendencies
 node_modules
+
+# yarn
 yarn-*.log
+
+# Eslint
 .eslintcache
+
+# build
 dist
+
+# Electron venders
 .browserslistrc
 src/shared/targets.json

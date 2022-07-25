@@ -1,16 +1,4 @@
-import { StrictMode } from 'react'
-import { render } from 'react-dom'
-import { Provider } from 'react-redux'
+import { createRoot } from 'react-dom/client'
+import App from './App'
 
-import store from '@/store'
-import App from '@/App'
-import '@/index.less'
-
-render(
-  <StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </StrictMode>,
-  document.getElementById('root')
-)
+createRoot(document.getElementById('root') as HTMLDivElement).render(<App />)
