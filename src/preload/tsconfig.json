@@ -5,7 +5,7 @@
     "paths": {
       "@@/*": ["../../*"],
       "@/*": ["*"],
-      "@shared": ["../shared"]
+      "@shared/*": ["../shared/*"]
     }
   },
   "include": ["./**/*.ts", "../../types/**/*.ts", "../../package.json"]
