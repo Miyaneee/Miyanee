@@ -23,9 +23,6 @@
     "redux"
   ],
   "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
-  "engines": {
-    "node": ">=16.7.0"
-  },
   "scripts": {
     "prepare": "husky install | node scripts/updateVenders.cjs",
     "start": "node scripts/start.js",
@@ -33,7 +30,7 @@
     "build:preload": "cd src/preload && vite build",
     "build:main": "cd src/main && vite build",
     "build": "npm run build:renderer && npm run build:main && npm run build:preload",
-    "package": "node scripts/clear.js && npm run build && electron-builder --config electron-builder.config.js",
+    "package": "rimraf dist && npm run build && electron-builder --config electron-builder.config.js",
     "lint": "eslint ./src/**/*.{ts,tsx} --max-warnings 0"
   },
   "dependencies": {
@@ -68,6 +65,7 @@
     "react-dom": "^17.0.2",
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
+    "rimraf": "^3.0.2",
     "rsuite": "^5.15.1",
     "typescript": "^4.7.3",
     "uuid": "^8.3.2",
