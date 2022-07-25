@@ -2,3 +2,5 @@ node_modules
 yarn-*.log
 .eslintcache
 dist
+.browserslistrc
+src/shared/targets.json

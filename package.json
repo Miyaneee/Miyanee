@@ -27,7 +27,7 @@
     "node": ">=16.7.0"
   },
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky install | node scripts/updateVenders.cjs",
     "start": "node scripts/start.js",
     "build:renderer": "cd src/renderer && vite build",
     "build:preload": "cd src/preload && vite build",
