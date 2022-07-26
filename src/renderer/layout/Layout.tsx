@@ -1,12 +1,12 @@
 import { PropsWithChildren } from 'react'
 import TitleBar from './titleBar/TitleBar'
+import './Layout.less'
 
 function Layout(props: PropsWithChildren) {
-  const { children } = props
   return (
-    <div>
+    <div className="Layout">
       <TitleBar />
-      {children}
+      <div className="content">{props.children}</div>
     </div>
   )
 }
