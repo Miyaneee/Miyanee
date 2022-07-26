@@ -4,8 +4,8 @@ import menu from './modules/menu'
 
 app.whenReady().then(() => {
   const win = new BrowserWindow({
-    minWidth: 800,
-    minHeight: 600,
+    minWidth: 1000,
+    minHeight: 800,
     center: true,
     frame: false,
     webPreferences: {

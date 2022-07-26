@@ -1,5 +1,8 @@
+import Layout from './layout/Layout'
+import './App.less'
+
 function App() {
-  return <div></div>
+  return <Layout />
 }
 
 export default App
