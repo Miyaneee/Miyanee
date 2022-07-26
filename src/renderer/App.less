@@ -1,2 +1,13 @@
 .App {
+  height: 100%;
+
+  .Tabs {
+    height: 100%;
+
+    & > div:nth-child(2) {
+      height: calc(100% - 2em);
+      overflow: auto;
+      background-color: #eee;
+    }
+  }
 }
