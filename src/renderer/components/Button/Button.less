@@ -1,0 +1,32 @@
+.btn(@background-color, @color) {
+  border-width: 0;
+  border-radius: 0.5em;
+  padding: 0.4em 0.8em;
+  cursor: pointer;
+  background-color: @background-color;
+  color: @color;
+  font: inherit;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover,
+  &:focus {
+    background-color: darken(@background-color, 10%);
+  }
+
+  &:focus-visible {
+    outline-color: darken(@background-color, 30%);
+    outline-style: auto;
+    outline-width: 2px;
+  }
+}
+
+.Button {
+  .btn(#eee, black);
+
+  &.primary {
+    .btn(#32abf1, white);
+  }
+  &.danger {
+    .btn(#ea2027, white);
+  }
+}
