@@ -23,7 +23,7 @@ const Group = forwardRef<HTMLDivElement, GroupProps>((props, ref) => {
         ...style,
         display: 'flex',
         justifyContent,
-        alignItems,
+        alignItems: alignItems || 'center',
         flexWrap,
         flexDirection
       }}
