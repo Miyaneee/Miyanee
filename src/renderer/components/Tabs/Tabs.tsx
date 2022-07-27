@@ -1,25 +1,46 @@
-import { useState, PropsWithChildren } from 'react'
+import { useState, useEffect, PropsWithChildren } from 'react'
 import TabItem from './TabItem'
 import cx from 'clsx'
 import { filterChildrenByType } from '@/components/utils'
 import './Tabs.less'
 
 interface TabsProps extends PropsWithChildren {
+  activeKey?: string | number
   onActive?: (key: string | number) => void
+}
+
+function createIsMountedObj(items: { props: { activeKey: string | number } }[]) {
+  const obj: Record<string, boolean> = {}
+  items.forEach((item, i) => {
+    obj[item.props.activeKey] = !i
+  })
+  return obj
 }
 
 function Tabs(props: TabsProps) {
   const { children, onActive } = props
   const items = filterChildrenByType(children, TabItem)
-  const [activeKey, setActiveKey] = useState(items[0].props.activeKey)
-  const [mount, setMount] = useState([true, ...new Array(items.length - 1).fill(false)])
+  const [activeKey, setActiveKey] = useState(props.activeKey ?? items[0].props.activeKey)
+  const [isMountedObj, setIsMountedObj] = useState(createIsMountedObj(items))
 
-  function handleClick(activeKey: string | number, index: number) {
+  useEffect(() => {
+    const { activeKey } = props
+    if (activeKey !== undefined) {
+      setActiveKey(activeKey)
+      if (!isMountedObj[activeKey]) {
+        const newMount = { ...isMountedObj }
+        newMount[activeKey] = true
+        setIsMountedObj(newMount)
+      }
+    }
+  }, [props.activeKey])
+
+  function handleClick(activeKey: string | number) {
     setActiveKey(activeKey)
-    if (!mount[index]) {
-      const newMount = [...mount]
-      newMount[index] = true
-      setMount(newMount)
+    if (!isMountedObj[activeKey]) {
+      const newMount = { ...isMountedObj }
+      newMount[activeKey] = true
+      setIsMountedObj(newMount)
     }
     if (onActive) onActive(activeKey)
   }
@@ -27,19 +48,19 @@ function Tabs(props: TabsProps) {
   return (
     <div className="Tabs">
       <div className="header">
-        {items.map(({ props }, i) => (
+        {items.map(({ props }) => (
           <button
             key={props.activeKey}
             className={cx(activeKey === props.activeKey && 'active')}
-            onClick={() => handleClick(props.activeKey, i)}
+            onClick={() => handleClick(props.activeKey)}
           >
             {props.title}
           </button>
         ))}
       </div>
       <div>
-        {items.map(({ props }, i) =>
-          mount[i] ? (
+        {items.map(({ props }) =>
+          isMountedObj[props.activeKey] ? (
             <div
               key={props.activeKey}
               style={{ display: activeKey === props.activeKey ? 'block' : 'none' }}
