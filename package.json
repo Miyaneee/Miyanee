@@ -33,8 +33,11 @@
     "package": "rimraf dist && npm run build && electron-builder --config electron-builder.config.cjs",
     "lint": "eslint ./src/**/*.{ts,tsx} --max-warnings 0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "electron-store": "^8.0.2"
+  },
   "devDependencies": {
+    "@reduxjs/toolkit": "^1.8.3",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.30.7",

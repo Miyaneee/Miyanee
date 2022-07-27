@@ -1,4 +1,5 @@
 import { join } from 'node:path'
+import { homedir } from 'node:os'
 
 export const isDev = import.meta.env.DEV
 
@@ -7,3 +8,5 @@ export const indexPath = isDev
   : `file://${join(__dirname, 'index.html')}`
 
 export const preloadPath = join(__dirname, 'preload.js')
+
+export const appPath = join(homedir(), '.miyanee')
