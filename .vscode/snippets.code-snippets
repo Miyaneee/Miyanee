@@ -24,5 +24,10 @@
     "scope": "typescriptreact",
     "prefix": "useConstSnippet",
     "body": "const ${1:first} = useConst(${2:second})"
+  },
+  "useDispatch": {
+    "scope": "typescriptreact",
+    "prefix": "useDispatchSnippet",
+    "body": "const dispatch = useDispatch()"
   }
 }
