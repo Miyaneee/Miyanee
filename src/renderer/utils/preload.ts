@@ -1,1 +1,1 @@
-export const { version, ipcOn, ipcOnce, ipcOff, ipcSend, ipcSendSync } = window.miyanee
+export const { version, ipcOn, ipcOnce, ipcOff, ipcInvoke, ipcSend, ipcSendSync } = window.miyanee

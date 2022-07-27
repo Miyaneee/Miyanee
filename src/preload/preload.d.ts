@@ -4,6 +4,7 @@ type IpcListener = (event: Electron.IpcRendererEvent, ...args: any[]) => void
 
 interface Miyanee {
   readonly version: string
+  ipcInvoke(channel: IpcChannel, ...data: any[]): Promise<any>
   ipcSend(channel: IpcChannel, ...data: any[]): void
   ipcSendSync(channel: IpcChannel, ...data: any[]): any
   ipcOn(channel: IpcChannel, listener: IpcListener): void

@@ -2,6 +2,8 @@ import { app, BrowserWindow } from 'electron'
 import { isDev, indexPath, preloadPath } from './config'
 import menu from './modules/menu'
 import traffic from './modules/traffic'
+import request from './modules/request'
+import appManager from './modules/appManager'
 
 app.whenReady().then(() => {
   const win = new BrowserWindow({
@@ -22,6 +24,8 @@ app.whenReady().then(() => {
   win.loadURL(indexPath)
   win.setMenu(menu)
   traffic(win)
+  appManager()
+  request()
 })
 
 app.on('window-all-closed', app.quit)

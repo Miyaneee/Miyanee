@@ -1,21 +1,25 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron'
 import { version } from '@@/package.json'
+import { IpcChannels } from '@shared/channelNames'
 
 contextBridge.exposeInMainWorld('miyanee', {
   version,
-  ipcSend(channel: string, ...data: any[]) {
+  ipcInvoke(channel: IpcChannels, ...data: any[]) {
+    return ipcRenderer.invoke(channel, ...data)
+  },
+  ipcSend(channel: IpcChannels, ...data: any[]) {
     ipcRenderer.send(channel, ...data)
   },
-  ipcSendSync(channel: string, ...data: any[]) {
+  ipcSendSync(channel: IpcChannels, ...data: any[]) {
     return ipcRenderer.sendSync(channel, ...data)
   },
-  ipcOn(channel: string, listener: (event: IpcRendererEvent, ...args: any[]) => void) {
+  ipcOn(channel: IpcChannels, listener: (event: IpcRendererEvent, ...args: any[]) => void) {
     ipcRenderer.on(channel, listener)
   },
-  ipcOnce(channel: string, listener: (event: IpcRendererEvent, ...args: any[]) => void) {
+  ipcOnce(channel: IpcChannels, listener: (event: IpcRendererEvent, ...args: any[]) => void) {
     ipcRenderer.once(channel, listener)
   },
-  ipcOff(channel: string) {
+  ipcOff(channel: IpcChannels) {
     ipcRenderer.removeAllListeners(channel)
   }
 })
