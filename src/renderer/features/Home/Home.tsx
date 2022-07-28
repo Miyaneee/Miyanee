@@ -1,19 +1,22 @@
+import { useMemo, useState } from 'react'
+import { IconPlus } from '@tabler/icons'
 import Button from '@/components/Button/Button'
+import Input from '@/components/Input/Input'
+import AppList from './AppList'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectApps, App } from '@/store/apps'
-import { selectLayout, createViewer, handleActiveChange } from '@/store/layout'
+import { selectApps } from '@/store/apps'
+import { selectLayout, createViewer, handleActiveChange, toggleSearch } from '@/store/layout'
+import { App } from '@shared/types'
 import './Home.less'
 
 function Home() {
-  const apps = useSelector(selectApps)
-  const layout = useSelector(selectLayout)
   const dispatch = useDispatch()
-  function openApp(app: App) {
-    const viewer = layout.viewers.find(viewer => viewer.title === app.name)
-    if (viewer) {
-      dispatch(handleActiveChange(viewer.activeKey))
-      return
-    }
+  const layout = useSelector(selectLayout)
+  const apps = useSelector(selectApps)
+  const [search, setSearch] = useState('')
+  const filteredApps = useMemo(() => apps.filter(app => app.name.includes(search)), [search, apps])
+
+  function dispatchCreateViewer(app: App) {
     dispatch(
       createViewer({
         title: app.name,
@@ -24,33 +27,37 @@ function Home() {
       })
     )
   }
+  function handleOpen(app: App) {
+    if (app.allowMultiInstances) {
+      dispatchCreateViewer(app)
+      return
+    }
+    const viewer = layout.viewers.find(viewer => viewer.title === app.name)
+    if (viewer) {
+      dispatch(handleActiveChange(viewer.activeKey))
+      return
+    }
+    dispatchCreateViewer(app)
+  }
+  function handlePlusBtnClick() {
+    dispatch(toggleSearch(true))
+  }
+
   return (
     <div className="Home">
-      <input type="text" />
-      <ul>
-        {apps.map(app => (
-          <li key={app.name}>
-            <div className="content">
-              <div className="img-wrapper">
-                <img
-                  src="https://lf-cdn-tos.bytescm.com/obj/static/xitu_extension/static/github.46c47564.png"
-                  alt="img"
-                />
-              </div>
-              <div>
-                <h2>{app.name}</h2>
-                <p>{app.description}</p>
-              </div>
-            </div>
-            <div className="footer">
-              <Button className="primary" onClick={() => openApp(app)}>
-                打开
-              </Button>
-              <Button className="danger">删除</Button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div className="search-wrapper">
+        <Input
+          type="text"
+          className="search"
+          value={search}
+          onChange={e => setSearch(e.currentTarget.value)}
+          placeholder="搜索..."
+        />
+        <Button onClick={handlePlusBtnClick}>
+          <IconPlus color="#666" />
+        </Button>
+      </div>
+      <AppList dataSource={filteredApps} onOpen={handleOpen} onDelete={() => void 0} />
     </div>
   )
 }

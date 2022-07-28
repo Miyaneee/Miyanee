@@ -1,16 +1,16 @@
 import Store from 'electron-store'
 import { appPath } from '@/config'
-import { MiayneeApp } from '@shared/types'
+import { App } from '@shared/types'
 
-export const appStore = new Store<Record<string, MiayneeApp>>({
+export const appStore = new Store<Record<string, App>>({
   name: 'apps',
   defaults: {},
   cwd: appPath,
   clearInvalidConfig: true
 })
 
-export function getApp(): MiayneeApp[]
-export function getApp(packageName?: string): MiayneeApp
+export function getApp(): App[]
+export function getApp(packageName?: string): App
 export function getApp(packageName?: string) {
   if (packageName) {
     return appStore.get(packageName)
@@ -22,7 +22,7 @@ export function getApp(packageName?: string) {
   return apps
 }
 
-export function setApp(app: MiayneeApp) {
+export function setApp(app: App) {
   try {
     const { packageName } = app
     appStore.set(packageName, app)

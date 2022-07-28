@@ -4,6 +4,8 @@ import { Store } from '.'
 
 interface Layout {
   activeKey: number | string
+  showSearch: boolean
+  showSettings: boolean
   viewers: Viewer[]
 }
 
@@ -13,17 +15,23 @@ interface Viewer {
   props: ViewerProps
 }
 
-let i = 2
+let i = 3
 
 const slice = createSlice({
   name: 'layout',
   initialState: {
-    activeKey: 0,
+    activeKey: 1,
+    showSearch: true,
+    showSettings: false,
     viewers: []
   } as Layout,
   reducers: {
     handleActiveChange(state, { payload }: { payload: string | number }) {
       state.activeKey = payload
+    },
+    toggleSearch(state, { payload }: { payload: boolean }) {
+      state.showSearch = payload
+      state.activeKey = 1
     },
     createViewer(state, { payload }: { payload: Omit<Viewer, 'activeKey'> }) {
       const activeKey = i++
@@ -33,7 +41,7 @@ const slice = createSlice({
   }
 })
 
-export const { createViewer, handleActiveChange } = slice.actions
+export const { createViewer, handleActiveChange, toggleSearch } = slice.actions
 
 export default slice.reducer
 

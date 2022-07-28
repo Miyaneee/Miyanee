@@ -18,7 +18,7 @@ function TitleBar() {
       ipcOff('WINDOW_MAXIMIZE')
       ipcOff('WINDOW_UNMAXIMIZE')
     }
-  }, [])
+  }, [toggleIsMaximize])
   return (
     <Group className="TitleBar" justifyContent="space-between">
       <Group>

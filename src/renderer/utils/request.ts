@@ -6,8 +6,8 @@ interface requestOptions extends RequestInit {
   url: string
 }
 
-export default function request(
+export default function request<T extends Record<string, any>>(
   options: requestOptions
-): Promise<Promise<[null, Response] | [FetchError]>> {
+): Promise<Promise<[null, T] | [FetchError]>> {
   return ipcInvoke(REQUEST, options)
 }

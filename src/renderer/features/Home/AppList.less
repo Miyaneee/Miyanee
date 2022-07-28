@@ -1,0 +1,50 @@
+.AppList {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1em;
+
+  li {
+    flex: 0 0 20em;
+    height: 9.5em;
+    padding: 0.8em 1em;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    border-radius: 0.4em;
+
+    & > .content {
+      display: flex;
+      margin-bottom: 0.6em;
+    }
+  }
+  .img-wrapper {
+    margin-right: 0.5em;
+    padding: 0.4em;
+
+    img {
+      width: 2em;
+      height: 2em;
+    }
+  }
+  h2 {
+    font-size: 0.9em;
+    margin-bottom: 0.2em;
+  }
+  p {
+    height: 4.875em;
+    color: #666;
+    font-size: 0.8em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+  .footer {
+    font-size: 0.8em;
+    text-align: right;
+
+    button {
+      margin-left: 0.3em;
+    }
+  }
+}

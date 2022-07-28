@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectLayout, handleActiveChange } from './store/layout'
 import './App.less'
 
+const Search = lazy(() => import('./features/Search/Search'))
 const Viewer = lazy(() => import('./features/Viewer/Viewer'))
 
 function App() {
@@ -22,6 +23,11 @@ function App() {
             <Tabs.Item title="首页" activeKey={0}>
               <Home />
             </Tabs.Item>
+            {layout.showSearch && (
+              <Tabs.Item title="搜索应用" activeKey={1}>
+                <Search />
+              </Tabs.Item>
+            )}
             {layout.viewers.map(({ activeKey, title, props }) => {
               return (
                 <Tabs.Item key={activeKey} title={title} activeKey={activeKey}>

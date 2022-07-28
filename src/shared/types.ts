@@ -38,16 +38,18 @@ export type NpmSearchResult = {
   objects: NpmObject[]
 }
 
-export type MiyaneeAppConfig = {
+export type AppConfig = {
   name: string
   description?: string
   index: string
   preload?: string
   author: string
+  image?: string
   keywords?: string[]
+  allowMultiInstances?: boolean
 }
 
-export type MiayneeApp = MiyaneeAppConfig & {
+export type App = AppConfig & {
   isOffical: boolean
   packageName: string
   version: string

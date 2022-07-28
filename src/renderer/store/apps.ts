@@ -1,13 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { App } from '@shared/types'
 import { Store } from '.'
-
-export interface App {
-  name: string
-  description: string
-  image: string
-  index: string
-  preload?: string
-}
 
 const slice = createSlice({
   name: 'app',
