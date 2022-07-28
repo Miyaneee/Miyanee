@@ -6,31 +6,14 @@
     "commonjs": true
   },
   "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
+    "react-app",
+    "prettier",
     "plugin:prettier/recommended"
   ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
-  "plugins": ["@typescript-eslint", "react", "prettier"],
   "rules": {
-    "prettier/prettier": ["warn"],
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-var-requires": "off",
-    "react/prop-types": "off"
-  },
-  "settings": {
-    "react": {
-      "version": "18.2.0"
-    }
+    "prettier/prettier": ["warn"]
   },
   "ignorePatterns": ["dist", "node_modules"]
 }
